@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Theo dõi nhiệt độ ESP32</title>
+  <!-- Nhúng thư viện Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <style>
+    body { font-family: Arial; text-align: center; margin-top: 50px; background-color: #f4f4f9; }
+    .card { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: inline-block; }
+    h1 { color: #333; }
+    .temp-value { font-size: 80px; color: #e74c3c; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Nhiệt độ hiện tại</h1>
+    <div class="temp-value"><span id="temp">--</span> °C</div>
+  </div>
+
+  <script>
+    // Cấu hình Firebase cho Web
+    const firebaseConfig = {
+      apiKey: "AIzaSyCoxXy14_gaWN_lDtdPyetfRLEdm--Taec",
+      databaseURL: "https://first-prj-102026-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    };
+
+    // Khởi tạo Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Lắng nghe dữ liệu tại nhánh "/sensor/temperature"
+    db.ref('/sensor/temperature').on('value', (snapshot) => {
+      const nhietDo = snapshot.val();
+      if (nhietDo !== null) {
+        document.getElementById('temp').innerText = nhietDo;
+      }
+    });
+  </script>
+
+</body>
+</html>
